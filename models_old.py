@@ -36,6 +36,7 @@ from openerp.osv import fields, osv, expression
 from openerp.service.security import check_super
 from openerp.tools.translate import _
 from openerp.http import request
+import datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -66,6 +67,13 @@ class res_users(osv.osv):
                     user_id = res[0]
                     self.check_credentials(cr, user_id, password)
                     self._update_last_login(cr, user_id)
+		    right_now = datetime.datetime.now()
+		    user = self.pool.get('res.users').browse(cr,SUPERUSER_ID,user_id)
+		    if user.from_time > 0 and user.to_time < 24:
+			hour = right_now.hour
+			if hour < user.from_time or hour > user.to_time:
+			    raise openerp.exceptions.ValidationError('No tiene permitido ingresar en este horario')
+			    user_id = False				
 
         except openerp.exceptions.AccessDenied:
             _logger.info("Login failed for db:%s login:%s", db, login)

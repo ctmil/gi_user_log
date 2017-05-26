@@ -2,6 +2,17 @@
 <openerp>
     <data>
 	<!-- account_voucher.view_vendor_receipt_dialog_form -->
+        <record id="gi_res_users_form_view" model="ir.ui.view">
+            <field name="name">gi.res.users.form.view</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"></field>
+            <field name="arch" type="xml">
+		<field name="active" position="after">
+			<field name="from_time" />
+			<field name="to_time" />
+		</field>
+            </field>
+        </record>
 
         <record id="res_users_log_tree_view" model="ir.ui.view">
             <field name="name">res.users.log.tree.view</field>
