@@ -66,7 +66,8 @@ class res_users(osv.osv):
                 if res:
                     user_id = res[0]
                     self.check_credentials(cr, user_id, password)
-                    self._update_last_login(cr, user_id)
+		    if user_id != SUPERUSER_ID:
+	                    self._update_last_login(cr, user_id)
 		    right_now = datetime.datetime.now()
 		    user = self.pool.get('res.users').browse(cr,SUPERUSER_ID,user_id)
 		    if user.from_time > 0 and user.to_time < 24:
